@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+  ms-sql-server:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "Pa55w0rd2021"
+      MSSQL_PID: Express
+    ports:
+      - "1433:1433"
+  moviesimageboard:
+    image: ${DOCKER_REGISTRY-}moviesimageboard
+    build:
+      context: .
+      dockerfile: MoviesImageBoard/Dockerfile
+  api:
+    image: ${DOCKER_REGISTRY-}api
+    build:
+      context: .
+      dockerfile: API/Dockerfile 
+
+

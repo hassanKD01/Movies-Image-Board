@@ -1,0 +1,47 @@
+﻿@page
+@model MoviesImageBoard.Pages.CreateModel
+@{
+    ViewData["Title"] = "Create Thread";
+}
+
+<div class="container text-center"><h4>Create Thread</h4></div>
+
+<article class='form'>
+    <form method="post" enctype="multipart/form-data">
+        <div class='form-control-custom'>
+            <label asp-for="Input.Title"></label>
+            <input asp-for="Input.Title" />
+        </div>
+        <div class="form-control-custom">
+            <label asp-for="Input.MovieName"></label>
+            <input asp-for="Input.MovieName" />
+        </div>
+        <div class='form-control-custom'>
+            <label asp-for="Input.Category"></label>
+            <select asp-for="Input.Category">
+                @foreach (var category in Constants.Categories.categories)
+                {
+                    <option>@category</option>
+                }
+            </select>
+        </div>
+        <div class="form-control-custom">
+            <label asp-for="Input.Content"></label>
+            <textarea asp-for="Input.Content" maxlength="2200"></textarea>
+        </div>
+        <div class="form-control-custom">
+            <label asp-for="Image"></label>
+
+            <!--customize file upload button-->
+            <label class="custom-file-upload">
+                <input asp-for="Image" />
+                Choose Image
+            </label>
+            <!-------------------------------->
+        </div>
+        <button type='submit' class='btn'>
+            Post Thread
+        </button>
+    <div asp-validation-summary="All"></div>
+    </form>
+</article>

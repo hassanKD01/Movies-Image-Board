@@ -1,0 +1,61 @@
+﻿@page "{id:int}"
+@model MoviesImageBoard.Pages.ThreadModel
+@{
+    ViewData["Title"] = Model.Thread.Title;
+}
+<div class="thread" id="@Model.Thread.Id">
+    <img src="~/images/@Model.Thread.ImagePath" alt="" title="@Model.Thread.ImagePath" />
+    <div>
+        <h4><b>@Model.Thread.Title :</b></h4>
+        <h6>@Model.Thread.MovieName - @Model.Thread.CategoryFK - <a href="javascript:reply(@Model.Thread.Id)">@Model.Thread.Id</a> - @Model.Thread.Date</h6>
+        <p>@Model.Thread.Content</p>
+    </div>
+</div >
+@if(Model.Thread.Comments.Count > 0)
+{
+
+    @foreach (var comment in Model.Thread.Comments)
+    {
+        <div class="comment" id="@comment.Id">
+            <div class="flex-row">
+                @if (Model.Userid == comment.UserId)
+                {
+                <form method="post" asp-page-handler="DeleteComment">
+                    <button class="danger btn float-right" type="submit">Delete</button>
+                    <input type="hidden" value="@comment.Id" asp-for="CommentId"/>
+                </form>
+                }
+                <b><a href="javascript:reply(@comment.Id)">@comment.Id</a> - @comment.Date</b>
+            </div>
+            <p>
+                @foreach (string word in comment.Content.Split(new Char[] { ' ','\n'},StringSplitOptions.RemoveEmptyEntries))
+                {
+                    string space = " ";
+                    if (word.StartsWith(">>"))
+                    {
+                        <a href="#@word.Substring(2)">@word</a>
+                    }
+                    else
+                        space += word;
+                    @space
+                }
+            </p>
+        </div>
+    }
+}
+<article id="reply" class="form reply text-center" style="right: 0px; top: 20%;">
+    <form method="post">
+        <div class="flex-row justify-content-between">
+            <b>Reply to Thread @Model.Thread.Id</b>
+            <a href="javascript:close()" class="text-danger float-right">close</a>
+        </div>
+        <hr />
+        <div>
+            <textarea asp-for="Input.Content" maxlength="2200" placeholder="Comment" cols="48" rows="4"></textarea>
+        </div>
+        <button type='submit' class='btn'>
+            Post
+        </button>
+        <input type="hidden" value="@Model.Thread.Id" asp-for="Input.ThreadId" />
+    </form>
+</article>

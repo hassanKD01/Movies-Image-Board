@@ -1,0 +1,22 @@
+﻿@page
+@model MoviesImageBoard.Areas.Identity.Pages.Account.Manage.MyThreadsModel
+@{
+    ViewData["Title"] = "My Threads";
+}
+
+<h3>@ViewData["Title"]</h3>
+<a class="btn" asp-page="/Create">Create a Thread</a>
+<ul class='threads my-threads'>
+    @foreach (var thread in Model.Threads)
+    {
+        <li>
+            <a href="#" title="link to thread"><img src="~/images/@thread.ImagePath" alt="" /></a>
+            <h4>@thread.Title</h4>
+            <p>@thread.MovieName</p>
+            <form method="post">
+                <button class="danger btn" type="submit">Delete Thread</button>
+                <input type="hidden" value="@thread.Id" asp-for="id" />
+            </form>
+        </li>
+    }
+</ul>
